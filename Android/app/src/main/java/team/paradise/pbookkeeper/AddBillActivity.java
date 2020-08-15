@@ -18,6 +18,12 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+*
+* 2020/8/15 Paradise Realized RecvUnit and Date Picking
+*
+* */
+
 public class AddBillActivity extends AppCompatActivity {
 
     private Button next_btn;
@@ -64,7 +70,11 @@ public class AddBillActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"请输入正确的收货单位与账单日期",Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                //Edit bill content
                 Intent i = new Intent(AddBillActivity.this, EditBillActivity.class);
+                i.putExtra("recvUnit",recv_unit.getText().toString());
+                i.putExtra("date",bill_date.getText().toString());
                 startActivity(i);
             }
 
