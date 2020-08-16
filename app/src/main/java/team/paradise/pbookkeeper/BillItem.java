@@ -1,5 +1,7 @@
 package team.paradise.pbookkeeper;
 
+import androidx.annotation.NonNull;
+
 public class BillItem {
     private String name;
     private String comment;

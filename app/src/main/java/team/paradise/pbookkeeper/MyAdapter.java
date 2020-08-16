@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 
@@ -46,25 +49,22 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(mContext).inflate(R.layout.edit_bill_item,viewGroup,false);
 
-        TextView tv_name = view.findViewById(R.id.name);
-        TextView tv_comment = view.findViewById(R.id.comment);
-        TextView tv_number = view.findViewById(R.id.number);
-        TextView tv_price = view.findViewById(R.id.price);
-        TextView tv_total = view.findViewById(R.id.total);
+        if(view == null){
+            view = LayoutInflater.from(mContext).inflate(R.layout.edit_bill_item,viewGroup,false);
+        }
 
-        String name = tv_name.getText().toString() + Datas.get(i).getName();
-        String comment = tv_comment.getText().toString() + Datas.get(i).getComment();
-        String number = tv_number.getText().toString() + Datas.get(i).getNumber();
-        String price = tv_price.getText().toString() + Datas.get(i).getPrice();
-        String total = tv_total.getText().toString() + Datas.get(i).getTotal();
+        //Prevent text from overlapping
+        TextView uptv = view.findViewById(R.id.uptext);
+        TextView downtv = view.findViewById(R.id.downtext);
 
-        tv_name.setText(name);
-        tv_comment.setText(comment);
-        tv_number.setText(number);
-        tv_price.setText(price);
-        tv_total.setText(total);
+        BillItem item = Datas.get(i);
+
+        String uptxt = "品名：" + item.getName() + "\t备注：" + item.getComment();
+        String downtxt = "单价：" + item.getPrice() + "\t数量：" + item.getNumber() + "\t金额：" + item.getTotal();
+
+        uptv.setText(uptxt);
+        downtv.setText(downtxt);
 
         return view;
     }
