@@ -106,4 +106,4 @@ They are a class of a bill item and a adapter class,which extends BaseAdapter, o
 I suggest you creating a class of a bill, which includes bill item`s array ,receive unit and date of bill.
 Then I can store data via it.
 
-!!!BEST COOPERATION!!!
+> !!!BEST COOPERATION!!!
