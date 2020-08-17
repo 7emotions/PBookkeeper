@@ -12,27 +12,24 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import team.paradise.pbookkeeper.utils.BillItemDao;
+
 /*
 *
 * 2020/8/15 Paradise 实现 Item新建与显示
@@ -40,15 +37,15 @@ import java.util.List;
 * */
 public class EditBillActivity extends Activity {
     private SwipeMenuListView bill_list;
-    private List<BillItem> lists;
+    private ArrayList<BillItem> lists;
     private MyAdapter adapter;
     private SwipeMenuCreator creator;
 
     /*
     *
     * TODO:
-    * i.我的自定义适配器(res/edit_bill_item)右侧有两个Button，我觉得做左滑显示更好
-    * ii.两个Button分别是编辑Item与删除Item，我还没实现
+    * (Realized by 7emotions)i.我的自定义适配器(res/edit_bill_item)右侧有两个Button，我觉得做左滑显示更好
+    * (Realized by 7emotions)ii.两个Button分别是编辑Item与删除Item，我还没实现
     * iii.数据保存我还没做
     *
     * 以上的features你有时间就实现一下，实现了就在序号的前面做个标记
@@ -80,6 +77,15 @@ public class EditBillActivity extends Activity {
                         //收货单位
                         String recvUnit = i.getStringExtra("recvUnit");
                         String date = i.getStringExtra("date");
+
+                        BillItemDao dao=new BillItemDao(getApplicationContext());
+
+                        for(BillItem e:lists){
+                            System.out.println(e.toString());
+                        }
+
+                        dao.SaveBill(lists,recvUnit,date);
+
                         break;
                     }
                     default:
@@ -188,16 +194,16 @@ public class EditBillActivity extends Activity {
         LayoutInflater inflater = LayoutInflater.from(EditBillActivity.this);
         final View sampleView = inflater.inflate(R.layout.bill_dialog, null);
 
-        final BillItem eitem = lists.get(id);
+        final BillItem improvise_item = lists.get(id);
         final EditText edt_name = sampleView.findViewById(R.id.dialog_name);
         final EditText edt_number = sampleView.findViewById(R.id.dialog_number);
         final EditText edt_price = sampleView.findViewById(R.id.dialog_price);
         final EditText edt_total = sampleView.findViewById(R.id.dialog_total);
 
-        edt_name.setText(eitem.getName());
-        edt_number.setText(Integer.toString(eitem.getNumber()));
-        edt_price.setText(Integer.toString(eitem.getPrice()));
-        edt_total.setText(Integer.toString(eitem.getTotal()));
+        edt_name.setText(improvise_item.getName());
+        edt_number.setText(Integer.toString(improvise_item.getNumber()));
+        edt_price.setText(Integer.toString(improvise_item.getPrice()));
+        edt_total.setText(Integer.toString(improvise_item.getTotal()));
 
         //获取Comment
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
@@ -206,10 +212,9 @@ public class EditBillActivity extends Activity {
                         android.R.layout.simple_spinner_item);
         final Spinner comment_spi = sampleView.findViewById(R.id.comment_spi);
         comment_spi.setAdapter(arrayAdapter);
-        //TODO:BUG
-        //null object getting
+
         for(int i=0;i<comment_spi.getAdapter().getCount();i++) {
-            if(eitem.getComment().equals(comment_spi.getAdapter().getItem(i).toString())) {
+            if(improvise_item.getComment().equals(comment_spi.getAdapter().getItem(i).toString())) {
                 comment_spi.setSelection(i,true);
             }
         }
@@ -239,7 +244,7 @@ public class EditBillActivity extends Activity {
                         int total = Integer.parseInt((edt_total.getText().toString()));
                         if(item.getComment() == null){
                             //Comment isn`t changed
-                            item.setComment(eitem.getComment());
+                            item.setComment(improvise_item.getComment());
                         }
 
                         item.setName(name);
@@ -248,7 +253,6 @@ public class EditBillActivity extends Activity {
                         item.setTotal(total);
 
                         adapter.set(id,item);
-                        //return;
                     }
                 })
                 .setNegativeButton("取消", null).create();
