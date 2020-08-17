@@ -43,7 +43,7 @@ At the left of the ToolBar is a NavigationView,I haven`t develop it,either.
 
 There is a Frgment under the ToolBar.I plan to show the rencent bills here.And user click each item,he or she will get a summary of the item.The user can edit,delete and share it as well. 
 
-At the bottom is a FloatingButton.After opening it,you can see a sub button named 'New',that`s all now.Click it and you will see a layout like this:
+At the bottom is a FloatingButton.After clicking it,you can see a sub button named 'New',that`s all now.Click it and you will see a layout like this:
 
 ![add](./MDImage/Add.png)
 
@@ -92,7 +92,7 @@ However,the function which is saving data hasn`t been realized by me.
 
 If you click the FloatingButton,the dialog that can create a item of the list,which is in the content_edit _bill.xml will show you.
 
-After submit the dialog, you can see what you just submitted.Try sliding it to the left,you can see two buttons.Yes,a button is used to edit the bill item and another is to delete the bill item.
+After submitting the dialog, you can see what you just submitted.Try sliding it to the left,you can see two buttons.Yes,a button is used to edit the bill item and another is to delete the bill item.
 
 Attention!There is a bug,which is when you edit the bill item,comment will get a null object.Please help me fix it.What I want is that user can select multiple items to delete.Also,I`d like to ask you to realize the function which is automatic calculation.
 

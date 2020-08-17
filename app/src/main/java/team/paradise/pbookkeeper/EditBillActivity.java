@@ -98,57 +98,7 @@ public class EditBillActivity extends Activity {
             //悬浮按钮按下
             @Override
             public void onClick(View view) {
-                //自定义dialog的View
-                final BillItem item=new BillItem();
-                LayoutInflater inflater = LayoutInflater.from(EditBillActivity.this);
-                final View sampleView = inflater.inflate(R.layout.bill_dialog, null);
-
-                //获取Comment
-                ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
-                        createFromResource(EditBillActivity.this,
-                                R.array.comment_spinner,
-                                android.R.layout.simple_spinner_item);
-                Spinner comment_spi = sampleView.findViewById(R.id.comment_spi);
-                comment_spi.setAdapter(arrayAdapter);
-                comment_spi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        item.setComment(adapterView.getItemAtPosition(i).toString());
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
-                //创建并显示AlertDialog
-                AlertDialog dialog = new AlertDialog.Builder(EditBillActivity.this)
-                        .setTitle("添加商品")
-                        .setView(sampleView)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String name = ((TextView)sampleView.findViewById(R.id.dialog_name))
-                                        .getText().toString();
-                                int number = Integer.parseInt(((TextView)sampleView.
-                                        findViewById(R.id.dialog_number)).getText().toString());
-                                int price = Integer.parseInt(((TextView)sampleView.
-                                        findViewById(R.id.dialog_price)).getText().toString());
-                                int total = Integer.parseInt(((TextView)sampleView.
-                                        findViewById(R.id.dialog_total)).getText().toString());
-
-                                item.setName(name);
-                                item.setNumber(number);
-                                item.setPrice(price);
-                                item.setTotal(total);
-                                adapter.AddItem(item);
-                                //return;
-                            }
-                        })
-                        .setNegativeButton("取消", null).create();
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
+                newAlertDialog();
             }
         });
 
@@ -175,6 +125,61 @@ public class EditBillActivity extends Activity {
             }
         });
         bill_list.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+    }
+
+    private void newAlertDialog()
+    {
+        //自定义dialog的View
+        final BillItem item=new BillItem();
+        LayoutInflater inflater = LayoutInflater.from(EditBillActivity.this);
+        final View sampleView = inflater.inflate(R.layout.bill_dialog, null);
+
+        //获取Comment
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
+                createFromResource(EditBillActivity.this,
+                        R.array.comment_spinner,
+                        android.R.layout.simple_spinner_item);
+        Spinner comment_spi = sampleView.findViewById(R.id.comment_spi);
+        comment_spi.setAdapter(arrayAdapter);
+        comment_spi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                item.setComment(adapterView.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //创建并显示AlertDialog
+        AlertDialog dialog = new AlertDialog.Builder(EditBillActivity.this)
+                .setTitle("添加商品")
+                .setView(sampleView)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String name = ((TextView)sampleView.findViewById(R.id.dialog_name))
+                                .getText().toString();
+                        int number = Integer.parseInt(((TextView)sampleView.
+                                findViewById(R.id.dialog_number)).getText().toString());
+                        int price = Integer.parseInt(((TextView)sampleView.
+                                findViewById(R.id.dialog_price)).getText().toString());
+                        int total = Integer.parseInt(((TextView)sampleView.
+                                findViewById(R.id.dialog_total)).getText().toString());
+
+                        item.setName(name);
+                        item.setNumber(number);
+                        item.setPrice(price);
+                        item.setTotal(total);
+                        adapter.AddItem(item);
+                        //return;
+                    }
+                })
+                .setNegativeButton("取消", null).create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 
     private void editAlertDialog(final int id){
@@ -217,7 +222,7 @@ public class EditBillActivity extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                System.out.println("onNothingSelected");
             }
         });
 
@@ -232,12 +237,17 @@ public class EditBillActivity extends Activity {
                         int number = Integer.parseInt((edt_number.getText().toString()));
                         int price = Integer.parseInt((edt_price.getText().toString()));
                         int total = Integer.parseInt((edt_total.getText().toString()));
+                        if(item.getComment() == null){
+                            //Comment isn`t changed
+                            item.setComment(eitem.getComment());
+                        }
 
                         item.setName(name);
                         item.setNumber(number);
                         item.setPrice(price);
                         item.setTotal(total);
-                        lists.set(id,item);
+
+                        adapter.set(id,item);
                         //return;
                     }
                 })

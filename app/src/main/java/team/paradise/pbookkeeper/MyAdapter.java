@@ -32,6 +32,11 @@ public class MyAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void set(int i,BillItem item){
+        Datas.set(i,item);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return Datas == null?0: Datas.size();

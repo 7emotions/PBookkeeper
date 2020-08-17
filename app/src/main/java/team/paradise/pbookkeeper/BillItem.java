@@ -21,6 +21,12 @@ public class BillItem {
         this.total = total;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return getName()+"+"+getComment();
+    }
+
     public String getName() {
         return name;
     }
