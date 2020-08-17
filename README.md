@@ -99,7 +99,7 @@ Attention!There is a bug,which is when you edit the bill item,comment will get a
 As for the following Java files:
 
 1. team.paradise.pbookkeeper.BillItem.java
-2. team.paradise.pbookkeeper.MyAdapter.java
+2. team.paradise.pbookkeeper.MyItemAdapter.java
 
 They are a class of a bill item and a adapter class,which extends BaseAdapter, of List that is in team.paradise.pbookkeeper.EditBillActivity.java
 

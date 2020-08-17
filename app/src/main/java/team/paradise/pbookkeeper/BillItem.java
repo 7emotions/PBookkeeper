@@ -24,7 +24,12 @@ public class BillItem {
     @NonNull
     @Override
     public String toString() {
-        return getName()+"+"+getComment();
+        return "\n" +
+                "Name:"+this.name+"\n" +
+                "Number:"+this.number+"\n" +
+                "Price"+this.price+"\n" +
+                "Total:"+this.total+"\n" +
+                "Comment:"+this.comment;
     }
 
     public String getName() {

@@ -2,11 +2,13 @@ package team.paradise.pbookkeeper.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
 
+import team.paradise.pbookkeeper.Bill;
 import team.paradise.pbookkeeper.BillItem;
 
 public class BillItemDao {
@@ -55,5 +57,10 @@ public class BillItemDao {
         String TB_NAME = "tb_" + unit + "_" + date.replace("-","_");
         db=dbHelper.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS "+TB_NAME);
+    }
+
+    public ArrayList<Bill> queryBill() {
+        db=dbHelper.getWritableDatabase();
+        return null;
     }
 }

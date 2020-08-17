@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,7 @@ import team.paradise.pbookkeeper.utils.BillItemDao;
 public class EditBillActivity extends Activity {
     private SwipeMenuListView bill_list;
     private ArrayList<BillItem> lists;
-    private MyAdapter adapter;
+    private MyItemAdapter adapter;
     private SwipeMenuCreator creator;
 
     /*
@@ -72,7 +73,6 @@ public class EditBillActivity extends Activity {
                  * */
                 switch (item.getItemId()){
                     case R.id.save:{
-                        // TODO:数据保存并返回Home
                         Intent i = getIntent();
                         //收货单位
                         String recvUnit = i.getStringExtra("recvUnit");
@@ -97,7 +97,7 @@ public class EditBillActivity extends Activity {
         });
 
         lists = new ArrayList<>();
-        adapter = new MyAdapter(lists,EditBillActivity.this);
+        adapter = new MyItemAdapter(lists,EditBillActivity.this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +205,7 @@ public class EditBillActivity extends Activity {
         edt_price.setText(Integer.toString(improvise_item.getPrice()));
         edt_total.setText(Integer.toString(improvise_item.getTotal()));
 
-        //获取Comment
+        //获取Comment`
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
                 createFromResource(EditBillActivity.this,
                         R.array.comment_spinner,
@@ -286,5 +286,19 @@ public class EditBillActivity extends Activity {
                 menu.addMenuItem(delItem);
             }
         };
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == 4){ //if back key is up
+            return returnHome();
+        }
+        return false;
+    }
+
+    private boolean returnHome() {
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
+        return true;
     }
 }

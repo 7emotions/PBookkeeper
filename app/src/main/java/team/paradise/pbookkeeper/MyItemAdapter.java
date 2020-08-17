@@ -7,17 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 
-public class MyAdapter extends BaseAdapter {
+public class MyItemAdapter extends BaseAdapter {
     private List<BillItem> Datas;
     private Context mContext;
 
-    public MyAdapter(List<BillItem> datas, Context mContext){
+    public MyItemAdapter(List<BillItem> datas, Context mContext){
         this.Datas = datas;
         this.mContext = mContext;
     }
@@ -54,23 +51,31 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
+        ViewHolder holder=null;
         if(view == null){
             view = LayoutInflater.from(mContext).inflate(R.layout.edit_bill_item,viewGroup,false);
+            holder=new ViewHolder();
+            //Prevent text from overlapping
+            holder.uptv=view.findViewById(R.id.uptext);
+            holder.downtv=view.findViewById(R.id.downtext);
+            view.setTag(holder);
+        }else {
+            holder=(ViewHolder)view.getTag();
         }
-
-        //Prevent text from overlapping
-        TextView uptv = view.findViewById(R.id.uptext);
-        TextView downtv = view.findViewById(R.id.downtext);
 
         BillItem item = Datas.get(i);
 
         String uptxt = "品名：" + item.getName() + "\t备注：" + item.getComment();
         String downtxt = "单价：" + item.getPrice() + "\t数量：" + item.getNumber() + "\t金额：" + item.getTotal();
 
-        uptv.setText(uptxt);
-        downtv.setText(downtxt);
+        holder.uptv.setText(uptxt);
+        holder.downtv.setText(downtxt);
 
         return view;
+    }
+
+    private class ViewHolder{
+        public TextView uptv;
+        public TextView downtv;
     }
 }
