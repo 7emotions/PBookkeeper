@@ -1,5 +1,7 @@
 package team.paradise.pbookkeeper;
 
+import androidx.annotation.NonNull;
+
 public class BillItem {
     private String name;
     private String comment;
@@ -17,6 +19,17 @@ public class BillItem {
         this.number = number;
         this.price = price;
         this.total = total;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "\n" +
+                "Name:"+this.name+"\n" +
+                "Number:"+this.number+"\n" +
+                "Price"+this.price+"\n" +
+                "Total:"+this.total+"\n" +
+                "Comment:"+this.comment;
     }
 
     public String getName() {

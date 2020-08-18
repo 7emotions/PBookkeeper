@@ -15,8 +15,6 @@ import com.bigkoo.pickerview.view.TimePickerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
 *
@@ -41,6 +39,7 @@ public class AddBillActivity extends AppCompatActivity {
         bill_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Pick the date of bill
                 TimePickerView pvTime = new TimePickerBuilder(AddBillActivity.this,
                         new OnTimeSelectListener() {
                             @Override
