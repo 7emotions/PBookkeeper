@@ -84,7 +84,7 @@ public class EditBillActivity extends Activity {
                             System.out.println(e.toString());
                         }
 
-                        dao.SaveBill(lists,recvUnit,date);
+                        dao.saveBill(new Bill(recvUnit,date,lists));
 
                         break;
                     }
@@ -205,7 +205,7 @@ public class EditBillActivity extends Activity {
         edt_price.setText(Integer.toString(improvise_item.getPrice()));
         edt_total.setText(Integer.toString(improvise_item.getTotal()));
 
-        //获取Comment`
+        //获取Comment
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
                 createFromResource(EditBillActivity.this,
                         R.array.comment_spinner,

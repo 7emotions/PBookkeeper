@@ -6,7 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import team.paradise.pbookkeeper.Bill;
 import team.paradise.pbookkeeper.BillItem;
@@ -20,47 +26,49 @@ public class BillItemDao {
     private static String DB_NAME="bill_db";
     private SQLiteDatabase db;
     private DBHelper dbHelper;
+    private int LEN = 4;
 
     public BillItemDao(Context context){
         dbHelper=new DBHelper(context,DB_NAME,null,1);
     }
 
-    public void SaveBill(ArrayList<BillItem> datas, String unit, String date){
-        String TB_NAME = "tb_" + unit + "_" + date.replace("-","_");
+    public void saveBill(Bill bill){
         db=dbHelper.getWritableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS " +
-                TB_NAME + " (_id integer primary key autoincrement," +
-                "name varchar(20)," +
-                "number integer," +
-                "price integer," +
-                "total integer," +
-                "comment varchar(10))");
+        String unit=bill.getUnit();
+        String date=bill.getDate();
+        ArrayList<BillItem> billItems=bill.getList();
+        Gson gson=new Gson();
+        String bill_data=gson.toJson(billItems);
 
-        for(BillItem e:datas){
-            ContentValues values=new ContentValues();
-            values.put("name", e.getName());
-            values.put("number",e.getNumber());
-            values.put("price",e.getPrice());
-            values.put("total",e.getTotal());
-            values.put("comment",e.getComment());
+        ContentValues values=new ContentValues();
+        values.put("unit",unit);
+        values.put("date",date);
+        values.put("bill_data",bill_data);
 
-            long row_id = db.insert(TB_NAME,null,values);
-            if(row_id==-1){
-                Log.i("BillItemDao","Save Data Filed.");
-            } else {
-              Log.i("BillItemDao","Save Data Successfully.");
-            }
+        db.insert(dbHelper.TB_NAME,null,values);
+    }
+
+    public ArrayList<Bill> queryBill(){
+        ArrayList<Bill> bills=new ArrayList<>();
+        db=dbHelper.getWritableDatabase();
+
+        Gson gson=new Gson();
+        Bill bill=new Bill();
+
+        Cursor cursor=db.query(dbHelper.TB_NAME,new String[]{
+                "unit",
+                "date",
+                "bill_data"
+        },null,null,null,null,null);
+        while (cursor.moveToNext()){
+            bill.setUnit(cursor.getString(cursor.getColumnIndex("unit")));
+            bill.setDate(cursor.getString(cursor.getColumnIndex("date")));
+            String bill_data=cursor.getString(cursor.getColumnIndex("bill_data"));
+            Type type=new TypeToken<ArrayList<BillItem>>(){}.getType();
+            ArrayList<BillItem> billItems=gson.fromJson(bill_data,type);
+            bill.setList(billItems);
+            bills.add(bill);
         }
-    }
-
-    public void DeleteBillTable(String unit, String date){
-        String TB_NAME = "tb_" + unit + "_" + date.replace("-","_");
-        db=dbHelper.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS "+TB_NAME);
-    }
-
-    public ArrayList<Bill> queryBill() {
-        db=dbHelper.getWritableDatabase();
-        return null;
+        return bills;
     }
 }
