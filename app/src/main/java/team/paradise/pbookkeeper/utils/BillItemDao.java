@@ -11,8 +11,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import team.paradise.pbookkeeper.Bill;
 import team.paradise.pbookkeeper.BillItem;
@@ -26,7 +24,6 @@ public class BillItemDao {
     private static String DB_NAME="bill_db";
     private SQLiteDatabase db;
     private DBHelper dbHelper;
-    private int LEN = 4;
 
     public BillItemDao(Context context){
         dbHelper=new DBHelper(context,DB_NAME,null,1);
@@ -45,7 +42,11 @@ public class BillItemDao {
         values.put("date",date);
         values.put("bill_data",bill_data);
 
-        db.insert(dbHelper.TB_NAME,null,values);
+        if (db.insert(dbHelper.TB_NAME,null,values)==-1){
+            Log.i("DAO","Save failed.");
+        }else {
+            Log.i("DAO","Save successfully.");
+        }
     }
 
     public ArrayList<Bill> queryBill(){
