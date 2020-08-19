@@ -46,7 +46,11 @@ public class AddBillActivity extends AppCompatActivity {
                             public void onTimeSelect(Date date, View v) {
                                 // If date after today
                                 if(date.after(new Date())){
-                                    Toast.makeText(getApplicationContext(),"请输入正确的日期",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            "请输入正确的日期",
+                                            Toast.LENGTH_LONG
+                                    ).show();
                                     return;
                                 }
 
@@ -66,7 +70,11 @@ public class AddBillActivity extends AppCompatActivity {
 
                 if (recv_unit.getText().toString().equals("") ||
                         bill_date.getText().toString().equals(btn_date_hit)){   //If user didn`t pick date
-                    Toast.makeText(getApplicationContext(),"请输入正确的收货单位与账单日期",Toast.LENGTH_LONG).show();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "请输入正确的收货单位与账单日期",
+                            Toast.LENGTH_LONG
+                    ).show();
                     return;
                 }
 

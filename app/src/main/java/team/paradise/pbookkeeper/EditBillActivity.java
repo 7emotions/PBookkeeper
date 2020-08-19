@@ -23,9 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -79,19 +79,12 @@ public class EditBillActivity extends Activity {
                         String date = i.getStringExtra("date");
 
                         BillItemDao dao=new BillItemDao(getApplicationContext());
-
-                        for(BillItem e:lists){
-                            System.out.println(e.toString());
-                        }
-
                         dao.saveBill(new Bill(recvUnit,date,lists));
-
                         break;
                     }
                     default:
                         break;
                 }
-
                 return true;
             }
         });
@@ -139,6 +132,27 @@ public class EditBillActivity extends Activity {
         final BillItem item=new BillItem();
         LayoutInflater inflater = LayoutInflater.from(EditBillActivity.this);
         final View sampleView = inflater.inflate(R.layout.bill_dialog, null);
+        final EditText ed_number = sampleView.findViewById(R.id.dialog_number);
+        final EditText ed_price = sampleView.findViewById(R.id.dialog_price);
+        final EditText ed_name = sampleView.findViewById(R.id.dialog_name);
+        final EditText ed_total = sampleView.findViewById(R.id.dialog_total);
+
+        Button calc_btn=sampleView.findViewById(R.id.calc_btn);
+        calc_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s_number=ed_number.getText().toString();
+                String s_price=ed_price.getText().toString();
+                if(!s_number.equals("") &&
+                !s_price.equals("")){
+                    //客户要求：超过四百张进一
+                    int number=(Integer.parseInt(s_number)+100)/1000;
+                    int price=Integer.parseInt(s_price);
+                    int total=number*price;
+                    ed_total.setText(Integer.toString(total));
+                }
+            }
+        });
 
         //获取Comment
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
@@ -166,14 +180,10 @@ public class EditBillActivity extends Activity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String name = ((TextView)sampleView.findViewById(R.id.dialog_name))
-                                .getText().toString();
-                        int number = Integer.parseInt(((TextView)sampleView.
-                                findViewById(R.id.dialog_number)).getText().toString());
-                        int price = Integer.parseInt(((TextView)sampleView.
-                                findViewById(R.id.dialog_price)).getText().toString());
-                        int total = Integer.parseInt(((TextView)sampleView.
-                                findViewById(R.id.dialog_total)).getText().toString());
+                        String name = ed_name.getText().toString();
+                        int number = Integer.parseInt(ed_number.getText().toString());
+                        int price = Integer.parseInt(ed_price.getText().toString());
+                        int total = Integer.parseInt(ed_total.getText().toString());
 
                         item.setName(name);
                         item.setNumber(number);

@@ -70,6 +70,21 @@ public class BillItemDao {
             bill.setList(billItems);
             bills.add(bill);
         }
+        cursor.close();
         return bills;
+    }
+
+    public void deleteBill(Bill bill){
+        db=dbHelper.getWritableDatabase();
+        if(
+                db.delete(dbHelper.TB_NAME,"unit=? and date=?",new String[]{
+                        bill.getUnit(),
+                        bill.getDate()
+                })>0
+        ){
+            Log.i("DAO","Delete filed.");
+        }else{
+            Log.i("DAO","Delete Successfully.");
+        }
     }
 }
