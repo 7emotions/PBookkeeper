@@ -14,6 +14,12 @@ public class Bill{
 
     }
 
+    public Bill(String unit, String date, ArrayList<BillItem> list) {
+        this.unit = unit;
+        this.date = date;
+        this.list = list;
+    }
+
     @NonNull
     @Override
     public String toString() {
