@@ -40,4 +40,11 @@
         android:name="team.paradise.pbookkeeper.ui.send.SendFragment"
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_search"-->
+<!--        android:name="team.paradise.pbookkeeper.ui.search.SearchFragment"-->
+<!--        android:label="@string/menu_search"-->
+<!--        tools:layout="@layout/search_layout"/>-->
+
+
 </navigation>

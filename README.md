@@ -107,3 +107,8 @@ I suggest you creating a class of a bill, which includes bill item`s array ,rece
 Then I can store data via it.
 
 > !!!BEST COOPERATION!!!
+
+## 修改
+1. 增加图片mipmap
+    1. 返回、搜索、设置
+2. 在app_bar_main里面增加search布局
