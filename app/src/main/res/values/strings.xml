@@ -26,4 +26,9 @@
     <string name="total">金额：</string>
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
+    <string name="auto_calc">计算</string>
+    <string name="settings">设置</string>
+    <string name="commet_settins">备注设置</string>
+    <string name="edit_comment_settings">修改备注</string>
+    <string name="hit_comment_settings">用“/”分隔</string>
 </resources>

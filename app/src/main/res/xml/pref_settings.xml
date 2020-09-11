@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings">
+    <PreferenceCategory
+        android:key="sinner_comment"
+        android:title="@string/commet_settins">
+            <EditTextPreference
+                android:key="comment_edt"
+                android:title="@string/edit_comment_settings"
+                android:inputType="text"
+                android:summary="@string/hit_comment_settings" />
+    </PreferenceCategory>
+</PreferenceScreen>

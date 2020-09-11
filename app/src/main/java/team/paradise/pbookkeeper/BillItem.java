@@ -2,7 +2,9 @@ package team.paradise.pbookkeeper;
 
 import androidx.annotation.NonNull;
 
-public class BillItem {
+import java.io.Serializable;
+
+public class BillItem implements Serializable {
     private String name;
     private String comment;
     private int number;
