@@ -53,15 +53,14 @@ public class BillItemDao {
         ArrayList<Bill> bills=new ArrayList<>();
         db=dbHelper.getWritableDatabase();
 
-        Gson gson=new Gson();
-        Bill bill=new Bill();
-
         Cursor cursor=db.query(dbHelper.TB_NAME,new String[]{
                 "unit",
                 "date",
                 "bill_data"
         },null,null,null,null,null);
         while (cursor.moveToNext()){
+            Gson gson=new Gson();
+            Bill bill=new Bill();
             bill.setUnit(cursor.getString(cursor.getColumnIndex("unit")));
             bill.setDate(cursor.getString(cursor.getColumnIndex("date")));
             String bill_data=cursor.getString(cursor.getColumnIndex("bill_data"));
@@ -72,6 +71,12 @@ public class BillItemDao {
         }
         cursor.close();
         return bills;
+    }
+
+    public void editBill(Bill bill){
+        db=dbHelper.getWritableDatabase();
+        deleteBill(bill);
+        saveBill(bill);
     }
 
     public void deleteBill(Bill bill){

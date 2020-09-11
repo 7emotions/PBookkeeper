@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,8 @@ public class EditBillActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_bill);
 
+        final Intent i = getIntent();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.edit_bill);
 
@@ -73,13 +76,16 @@ public class EditBillActivity extends Activity {
                  * */
                 switch (item.getItemId()){
                     case R.id.save:{
-                        Intent i = getIntent();
                         //收货单位
                         String recvUnit = i.getStringExtra("recvUnit");
                         String date = i.getStringExtra("date");
 
                         BillItemDao dao=new BillItemDao(getApplicationContext());
-                        dao.saveBill(new Bill(recvUnit,date,lists));
+                        if(i.getBooleanExtra("isEdit",true)){
+                            dao.editBill(new Bill(recvUnit,date,lists));
+                        }else {
+                            dao.saveBill(new Bill(recvUnit,date,lists));
+                        }
                         break;
                     }
                     default:
@@ -89,7 +95,12 @@ public class EditBillActivity extends Activity {
             }
         });
 
-        lists = new ArrayList<>();
+        if(i.getBooleanExtra("isEdit",true)){
+            lists = (ArrayList<BillItem>) i.getSerializableExtra("bill_data");
+        }else {
+            lists = new ArrayList<>();
+        }
+
         adapter = new MyItemAdapter(lists,EditBillActivity.this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -126,8 +137,7 @@ public class EditBillActivity extends Activity {
         bill_list.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
 
-    private void newAlertDialog()
-    {
+    private void newAlertDialog() {
         //自定义dialog的View
         final BillItem item=new BillItem();
         LayoutInflater inflater = LayoutInflater.from(EditBillActivity.this);
@@ -214,6 +224,23 @@ public class EditBillActivity extends Activity {
         edt_number.setText(Integer.toString(improvise_item.getNumber()));
         edt_price.setText(Integer.toString(improvise_item.getPrice()));
         edt_total.setText(Integer.toString(improvise_item.getTotal()));
+
+        Button calc_btn=sampleView.findViewById(R.id.calc_btn);
+        calc_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s_number=edt_number.getText().toString();
+                String s_price=edt_price.getText().toString();
+                if(!s_number.equals("") &&
+                        !s_price.equals("")){
+                    //客户要求：超过四百张进一
+                    int number=(Integer.parseInt(s_number)+100)/1000;
+                    int price=Integer.parseInt(s_price);
+                    int total=number*price;
+                    edt_total.setText(Integer.toString(total));
+                }
+            }
+        });
 
         //获取Comment
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.
@@ -308,6 +335,8 @@ public class EditBillActivity extends Activity {
 
     private boolean returnHome() {
         Intent intent=new Intent(this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("isOK",true);
         startActivity(intent);
         return true;
     }

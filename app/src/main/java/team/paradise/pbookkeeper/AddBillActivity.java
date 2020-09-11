@@ -16,6 +16,8 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import team.paradise.pbookkeeper.utils.BillItemDao;
+
 /*
 *
 * 2020/8/15 Paradise Realized RecvUnit and Date Picking
@@ -69,7 +71,7 @@ public class AddBillActivity extends AppCompatActivity {
                 String btn_date_hit = (String)getBaseContext().getResources().getText(R.string.bill_date);
 
                 if (recv_unit.getText().toString().equals("") ||
-                        bill_date.getText().toString().equals(btn_date_hit)){   //If user didn`t pick date
+                        bill_date.getText().toString().equals(btn_date_hit)){   //If user didn't pick date
                     Toast.makeText(
                             getApplicationContext(),
                             "请输入正确的收货单位与账单日期",
@@ -78,10 +80,25 @@ public class AddBillActivity extends AppCompatActivity {
                     return;
                 }
 
+                String srecv = recv_unit.getText().toString();
+                String sdate = bill_date.getText().toString();
+
+                for  (Bill bill : (new BillItemDao(getApplicationContext())).queryBill()) {
+                    if (bill.getDate().equals(sdate)&&bill.getUnit().equals(srecv)){
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "该账单已存在！",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        return;
+                    }
+                }
+
                 //Edit bill content
                 Intent i = new Intent(AddBillActivity.this, EditBillActivity.class);
-                i.putExtra("recvUnit",recv_unit.getText().toString());
-                i.putExtra("date",bill_date.getText().toString());
+                i.putExtra("recvUnit",srecv);
+                i.putExtra("date",sdate);
+                i.putExtra("isEdit",false);
                 startActivity(i);
             }
 

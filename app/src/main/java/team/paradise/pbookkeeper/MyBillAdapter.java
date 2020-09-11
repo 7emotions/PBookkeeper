@@ -9,15 +9,25 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import team.paradise.pbookkeeper.utils.BillItemDao;
+
 public class MyBillAdapter extends BaseAdapter {
+
     private ArrayList<Bill> bills;
     private LayoutInflater inflater;
 
-    public MyBillAdapter(ArrayList<Bill> bills,Context context){
-        this.bills=bills;
+    public MyBillAdapter(Context context){
+        this.bills= new BillItemDao(context).queryBill();
         this.inflater=LayoutInflater.from(context);
     }
 
+    public ArrayList<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(ArrayList<Bill> bills) {
+        this.bills = bills;
+    }
     @Override
     public int getCount() {
         return (bills==null)?0:bills.size();
@@ -31,6 +41,12 @@ public class MyBillAdapter extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return i;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        this.bills=new BillItemDao(inflater.getContext()).queryBill();
+        super.notifyDataSetChanged();
     }
 
     @Override
